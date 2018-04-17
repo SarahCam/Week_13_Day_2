@@ -8,6 +8,10 @@ server.use(parser.urlencoded({extended: true}));
 
 const MongoClient = require('mongodb').MongoClient;
 
+// Require a reference to the ObjectID class from mongodb...
+const ObjectID = require('mongodb').ObjectID;
+
+
 MongoClient.connect('mongodb://localhost:27017', function(err, client) {
   if (err) {
     console.log(err);
@@ -47,7 +51,7 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client) {
     });
   });
 
-  // DELETE ALL [DELETE] route
+  // DELETE ALL [DELETE] route...
   server.delete('/api/rooms', function(req,res) {
     const filterObject = {};
     const roomsCollection = db.collection('rooms');
@@ -61,6 +65,25 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client) {
       res.send();
     });
   });
+
+
+// UPDATE [PUT] route...
+server.put('/api/rooms/:id', function(req, res){
+  const roomsCollection = db.collection('rooms');
+  const objectID = ObjectID(req.params.id);
+  const filterObject = {_id: objectID};
+  const updatedData = req.body;
+  roomsCollection.update(filterObject, updatedData, function(err, result){
+    if(err) {
+      res.status(500);
+      res.send();
+    }
+    console.log("Updated a room  with object ID:" + req.params.id + " in 'rooms' collection in 'house' database");
+    res.status(204);
+    res.send();
+  });
+
+});
 
   server.listen(3000, function(){
     console.log("Listening on port 3000");
