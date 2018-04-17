@@ -33,7 +33,7 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client) {
     });
   });
 
-  // READ [GET] route...
+  // READ ALL [GET] route...
   server.get('/api/rooms', function(req, res) {
     const roomsCollection = db.collection('rooms');
     roomsCollection.find().toArray(function(err, results){
@@ -44,6 +44,21 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client) {
       }
       console.log("Got all documents in 'rooms' collection in 'house' database");
       res.json(results);
+    });
+  });
+
+  // DELETE ALL [DELETE] route
+  server.delete('/api/rooms', function(req,res) {
+    const filterObject = {};
+    const roomsCollection = db.collection('rooms');
+    roomsCollection.deleteMany(filterObject, function(err, result){
+      if(err) {
+        res.status(500);
+        res.send();
+      }
+      console.log("Deleted all rooms in 'rooms' collection in 'house' database");
+      res.status(204);
+      res.send();
     });
   });
 
