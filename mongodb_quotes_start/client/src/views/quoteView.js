@@ -14,12 +14,7 @@ QuoteView.prototype.clear = function(quote) {
 }
 
 QuoteView.prototype.render = function(quote){
-    const ul = document.querySelector('#quotes');
-    const li = document.createElement('li');
-    const text = document.createElement('p');
-    text.innerText = `${quote.name} - "${quote.quote}"`;
-    li.appendChild(text);
-    ul.appendChild(li);
+  // Add render stuff here...
 }
 
  module.exports = QuoteView;
